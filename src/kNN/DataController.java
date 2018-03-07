@@ -49,7 +49,14 @@ abstract class DataController {
 	void handleKeyValue(Entry entry){
 		if(keys.size()>0){
 			//wenn schon existiert der key value holen und um 1 erhöhen und dann wieder reintun
-			//wenn nicht dann einfach reintun
+			if(keys.containsKey(entry.getKeyValue())){
+				Integer amount = keys.get(entry.getKeyValue());
+				amount++;
+				keys.put(entry.getKeyValue(), amount);
+			}else{
+				keys.put(entry.getKeyValue(), 1);
+			}
+
 		}else{
 			keys.put(entry.getKeyValue(), 1);
 		}
