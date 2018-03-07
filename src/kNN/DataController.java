@@ -38,15 +38,17 @@ abstract class DataController {
 
 	}
 
+	//todo: implement for actual task
 	abstract Entry createEntry(String valueDelimiter);
 
-	void fillDataBags(int folds, int categorisations){
+	public void fillDataBags(int folds, int categorisations){
 		int bagSize = learningData.size()/folds;
-
+		int keyAmount = keys.size();
+		//todo: sort and make folds
 		//beim letzten dann immer rest rein tun?
 	}
 
-	void handleKeyValue(Entry entry){
+	private void handleKeyValue(Entry entry){
 		if(keys.size()>0){
 			//wenn schon existiert der key value holen und um 1 erhöhen und dann wieder reintun
 			if(keys.containsKey(entry.getKeyValue())){

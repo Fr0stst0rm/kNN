@@ -30,5 +30,6 @@ public class kNNAlgorithm implements Runnable {
 		LocalDateTime runTime = LocalDateTime.ofInstant(Instant.ofEpochMilli(new Date().getTime() - start.getTime()), TimeZone.getDefault().toZoneId());
 		System.out.println("Time: " + runTime);
 	}
+	//todo: the algorithm...
 
 }
