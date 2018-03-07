@@ -1,9 +1,11 @@
 package kNN;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.TimeZone;
 
+//pls comment your code
 public class kNNAlgorithm implements Runnable {
 
 	private Thread th;
