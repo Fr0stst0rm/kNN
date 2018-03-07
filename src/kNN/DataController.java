@@ -16,7 +16,7 @@ abstract class DataController {
 
 	private List<DataBag> bags = new LinkedList<>();
 
-	private Map<Entry, Integer> keys = new HashMap<>();
+	private Map<Value, Integer> keys = new HashMap<Value, Integer>();
 
 	public void parseData(String filename, String entryDelimiter, String valueDelimiter){
 
@@ -47,7 +47,12 @@ abstract class DataController {
 	}
 
 	void handleKeyValue(Entry entry){
-
+		if(keys.size()>0){
+			//wenn schon existiert der key value holen und um 1 erhöhen und dann wieder reintun
+			//wenn nicht dann einfach reintun
+		}else{
+			keys.put(entry.getKeyValue(), 1);
+		}
 	}
 
 	
