@@ -1,23 +1,53 @@
 package kNN;
 
 /**
- * This Interface is used for the different
- * values in one learning data entry
+ * The value class is to be constructed with a double value for normal values
+ * and a String for key values
  */
+public class Value {
 
-abstract class Value<templateValue> {
+    private double value;
+    private String stringValue;    //is only not null when isKey
+
+    private boolean isKey = false;
+
+    public Value(double value){
+        this.value = value;
+    }
+
+    public Value(String stringValue){
+        this.stringValue = stringValue;
+        isKey = true;
+    }
+
+    boolean isKey(){
+        return isKey;
+    }
+
+    String getStringValue() {
+        return stringValue;
+    }
+
+    public double getValue() {
+        return value;
+    }
+}
+
+
+/*
+abstract class ValueTemplate<templateValue> {
 
     private templateValue value;
 
-   abstract  boolean isKey ();
+    abstract  boolean isKey ();
 
     abstract void setValue(templateValue value);
 
     abstract templateValue getvalue();
 
     public boolean equal(Object other){
-        if (other instanceof Value<?>){
-            if ( ((Value<?>)other).value.equals(value) ){
+        if (other instanceof ValueTemplate<?>){
+            if ( ((ValueTemplate<?>)other).value.equals(value) ){
                 return true;
             }
         }
@@ -25,3 +55,4 @@ abstract class Value<templateValue> {
     }
 
 }
+*/
