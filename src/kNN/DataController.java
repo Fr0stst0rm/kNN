@@ -44,9 +44,19 @@ abstract class DataController{
 	//todo: implement for actual task
 	abstract LearningData createEntry(String valueDelimiter);
 
+	//todo: wo ausreißer wegwerfen?
 	public void fillDataBags(int folds){
 		int bagSize = dataAmount/folds;
 		int keyAmount = keysWithData.size();
+
+		for(int i = 0; i < folds; i++){
+			for(int a = 0; a < bagSize; a++){
+				for(int b = 0; b < keyAmount; a++){
+					DataBag dataBag = new DataBag();
+					//todo: add one of each key and then delete it from vector
+				}
+			}
+		}
 
 		//todo: sort and make folds
 		//beim letzten dann immer rest rein tun?

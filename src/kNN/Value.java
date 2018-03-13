@@ -16,7 +16,7 @@ public class Value {
     }
 
     public Value(String stringValue){
-        this.stringValue = stringValue;
+        this.stringValue = stringValue.toLowerCase();
         isKey = true;
     }
 
