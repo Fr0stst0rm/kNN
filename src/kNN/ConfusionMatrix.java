@@ -16,15 +16,15 @@ public class ConfusionMatrix {
 	}
 
 	public void setValue(String predictedLables, String realLables, int value) {
-		confusionMatrix[labels.indexOf(predictedLables)][labels.indexOf(realLables)] = value;
+		confusionMatrix[labels.indexOf(realLables)][labels.indexOf(predictedLables)] = value;
 	}
 
 	public void addToValue(String predictedLables, String realLables, int value) {
-		confusionMatrix[labels.indexOf(predictedLables)][labels.indexOf(realLables)] += value;
+		confusionMatrix[labels.indexOf(realLables)][labels.indexOf(predictedLables)] += value;
 	}
 
-	public int getValue(String lable1, String lable2) {
-		return confusionMatrix[labels.indexOf(lable1)][labels.indexOf(lable2)];
+	public int getValue(String predictedLables, String realLables) {
+		return confusionMatrix[labels.indexOf(realLables)][labels.indexOf(predictedLables)];
 	}
 
 	@Override
