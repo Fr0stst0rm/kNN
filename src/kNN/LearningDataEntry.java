@@ -1,9 +1,5 @@
 package kNN;
 
-/**
- * One LearningData object is the equivalent of one learning data entry
- */
-
 class LearningDataEntry<T extends Comparable<T>> extends DataEntry implements Comparable<LearningDataEntry<T>>{
 
 	private T keyValue;

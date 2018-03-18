@@ -9,7 +9,8 @@ import java.nio.file.Paths;
 import java.util.*;
 
 /**
- * This class contains and manages all DataBag objects T is the type of the key
+ * This class contains and manages all DataBag objects
+ * T is the type of the key
  * value
  */
 
@@ -48,7 +49,7 @@ public class DataController {
 
 					DataEntry dataEntry = new DataEntry();
 					for (String value : line.split(valueDelimiter)) {
-						dataEntry.addValue(new Value(Double.parseDouble(value)));
+						dataEntry.addValue(Double.parseDouble(value));
 					}
 					data.add(dataEntry);
 				}
@@ -114,7 +115,7 @@ public class DataController {
 						if (i == indexOfKey) {
 							dataEntry.setKeyValue(line.split(valueDelimiter)[i]);
 						} else {
-							dataEntry.addValue(new Value(Double.parseDouble(line.split(valueDelimiter)[i])));
+							dataEntry.addValue(Double.parseDouble(line.split(valueDelimiter)[i]));
 						}
 					}
 					data.add(dataEntry);

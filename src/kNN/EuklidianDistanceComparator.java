@@ -21,14 +21,14 @@ public class EuklidianDistanceComparator implements Comparator<DataEntry>{
 		
 		double summ = 0;
 		for(int i = 0; i < test1.size(); i++) {
-			summ += Math.pow(test1.get(i).getValue() - toCompare.get(i).getValue(), 2);
+			summ += Math.pow(test1.get(i) - toCompare.get(i), 2);
 		}
 		
 		dist1 = Math.sqrt( summ);
 		
 		summ = 0;
 		for(int i = 0; i < test2.size(); i++) {
-			summ += Math.pow(test2.get(i).getValue() - toCompare.get(i).getValue(), 2);
+			summ += Math.pow(test2.get(i) - toCompare.get(i), 2);
 		}
 		dist2 = Math.sqrt( summ);
 		

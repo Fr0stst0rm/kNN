@@ -17,7 +17,7 @@ public class kNNClassification implements Runnable {
 
 	private ArrayList<DataBag> dataBagList = new ArrayList<DataBag>();
 
-	HashMap<String, Integer> correctLearningDataValues = new HashMap<String, Integer>();
+	private HashMap<String, Integer> correctLearningDataValues = new HashMap<String, Integer>();
 
 	private ArrayList<DataEntry> data = null;
 
@@ -188,10 +188,10 @@ public class kNNClassification implements Runnable {
 	public void run() {
 
 		for (int i = 0; i < dataBags; i++) {
-			HashMap<String, Value> confusionM = new HashMap<String, Value>();
+			HashMap<String, Double> confusionM = new HashMap<>();
 
 			//Alle bags werden zum classifizieren verwendet verwendet 
-			ArrayList<LearningDataEntry<String>> trainingsData = new ArrayList<LearningDataEntry<String>>();
+			ArrayList<LearningDataEntry<String>> trainingsData = new ArrayList<>();
 			for (DataBag dataBag : dataBagList) {
 				trainingsData.addAll(dataBag);
 			}
