@@ -1,29 +1,17 @@
 package kNN;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
 
 /**
- * One DataBag holds a variable
- * amount of LearningData objects depending
- * on the Data object
+ * One DataBag holds a variable amount of LearningData objects depending on the
+ * Data object
  */
 
-class  DataBag {
+public class DataBag extends ArrayList<LearningDataEntry<String>> {
 
-    private boolean isTest;
+	public void addData(LearningDataEntry<String> learningData) {
+		this.add(learningData);
+	}
 
-    private List<LearningData> evenlyDistributedEntries = new ArrayList<>();
-
-    public void addData(LearningData learningData){
-        evenlyDistributedEntries.add(learningData);
-    }
-
-    public boolean isTest() {
-        return isTest;
-    }
-
-    public void setTestBag(boolean isTest){
-        this.isTest = isTest;
-    }
 }
