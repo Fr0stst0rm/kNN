@@ -80,10 +80,12 @@ public class kNNClassification implements Runnable {
 	 */
 	public void learn() {
 		createConfusionMatrix(dataBagList);
-		
+
 		ArrayList<HashMap<String, Integer>> confusionMatratzen = new ArrayList<HashMap<String, Integer>>();
 
-		//Count all possible Classifier
+		ArrayList<Double> accuracyList = new ArrayList<>();
+
+		// Count all possible Classifier
 		for (DataBag dataBag : dataBagList) {
 			for (LearningDataEntry<String> learningDataEntry : dataBag) {
 				if (!correctLearningDataValues.containsKey(learningDataEntry.getKeyValue())) {
@@ -93,30 +95,31 @@ public class kNNClassification implements Runnable {
 			}
 		}
 		System.out.println(correctLearningDataValues);
-		
-		
-		//Training durch k-fold cross Validation
+
+		// Training durch k-fold cross Validation
 
 		System.out.println("Start learning now!");
 
 		for (int i = 0; i < dataBags; i++) {
 			HashMap<String, Integer> confusionM = new HashMap<String, Integer>();
 
-			//Bag der als Test verwendet werden soll
+			// Bag der als Test verwendet werden soll
 			DataBag forTest = dataBagList.get(i);
 
-			//Alle andern bags werden zum training verwendet 
+			// Alle andern bags werden zum training verwendet
 			ArrayList<LearningDataEntry<String>> trainingsData = new ArrayList<LearningDataEntry<String>>();
 			for (int c = 0; c < dataBagList.size(); c++) {
-				if (c != i) trainingsData.addAll(dataBagList.get(c));
+				if (c != i)
+					trainingsData.addAll(dataBagList.get(c));
 			}
 
-			//Testen
+			// Testen
+			double accuracy = 0;
 			for (LearningDataEntry<String> entry : forTest) {
 				EuklidianDistanceComparator comperator = new EuklidianDistanceComparator(entry);
 				Collections.sort(trainingsData, comperator);
 
-				//Zahlen der meisten vorkommsisse
+				// Zahlen der meisten vorkommsisse
 				HashMap<String, Integer> classifyer = new HashMap<String, Integer>();
 				for (int c = 0; c < k; c++) {
 					if (!classifyer.containsKey(trainingsData.get(c).getKeyValue())) {
@@ -125,7 +128,7 @@ public class kNNClassification implements Runnable {
 					classifyer.put(trainingsData.get(c).getKeyValue(), classifyer.get(trainingsData.get(c).getKeyValue()) + 1);
 				}
 
-				//Find best fit
+				// Find best fit
 				int biggestValue = 0;
 				String bestClassifyer = "";
 				for (String key : classifyer.keySet()) {
@@ -139,15 +142,42 @@ public class kNNClassification implements Runnable {
 					confusionM.put(bestClassifyer, 0);
 				}
 				confusionM.put(bestClassifyer, confusionM.get(bestClassifyer) + 1);
-				//System.out.println("Entry: " + entry + "\n was classified as " + bestClassifyer);
+				confusionMatrix.addToValue(bestClassifyer, entry.getKeyValue(), 1);
+				if (entry.getKeyValue().equals(bestClassifyer)) {
+					accuracy += 1;
+				}
+				// System.out.println("Entry: " + entry + "\n was classified as
+				// " + bestClassifyer);
 			}
-			
+			accuracy = accuracy / forTest.size();
+			System.out.println("Accuracy: " + accuracy);
+			accuracyList.add(accuracy);
+
 			confusionMatratzen.add(confusionM);
 			System.out.println(confusionM);
 		}
-		
-		//TODO Confusion Matrix aus einzelnen werten berechnen (siehe Folien)
-		
+
+		// TODO Confusion Matrix aus einzelnen werten berechnen (siehe Folien)
+
+		double totalAccuracy = 0;
+		for (Double acc : accuracyList) {
+			totalAccuracy += acc;
+		}
+
+		totalAccuracy = totalAccuracy / accuracyList.size();
+
+		System.out.println("Total accuracy: " + totalAccuracy);
+
+		// for (String predicted : confusionMatrix.labels) {
+		// for (String real : confusionMatrix.labels) {
+		// confusionMatrix.setValue(predicted, real,
+		// confusionMatrix.getValue(predicted, real) /
+		// confusionMatratzen.size());
+		// }
+		// }
+
+		System.out.println(confusionMatrix);
+
 	}
 
 	/**
@@ -156,7 +186,8 @@ public class kNNClassification implements Runnable {
 	 * @param dataBagList2
 	 */
 	private void createConfusionMatrix(ArrayList<DataBag> dataBagList2) {
-		//Übersicht über richtig falsch; 2D array mit größe == möglichen lösungen
+		// Übersicht über richtig falsch; 2D array mit größe == möglichen
+		// lösungen
 		HashSet<String> uniqueKeys = new HashSet<>();
 
 		for (DataBag entry : dataBagList2) {
@@ -180,7 +211,7 @@ public class kNNClassification implements Runnable {
 
 	public void classify() {
 		System.out.println("Start classifying " + data.size() + " lines of data now!");
-		start = new Date(); //Zumm messen der Zeit
+		start = new Date(); // Zumm messen der Zeit
 		th.start();
 	}
 
@@ -190,18 +221,18 @@ public class kNNClassification implements Runnable {
 		for (int i = 0; i < dataBags; i++) {
 			HashMap<String, Double> confusionM = new HashMap<>();
 
-			//Alle bags werden zum classifizieren verwendet verwendet 
+			// Alle bags werden zum classifizieren verwendet verwendet
 			ArrayList<LearningDataEntry<String>> trainingsData = new ArrayList<>();
 			for (DataBag dataBag : dataBagList) {
 				trainingsData.addAll(dataBag);
 			}
 
-			//find kNN
+			// find kNN
 			for (DataEntry entry : data) {
 				EuklidianDistanceComparator comperator = new EuklidianDistanceComparator(entry);
 				Collections.sort(trainingsData, comperator);
 
-				//Zahlen der meisten vorkommsisse
+				// Zahlen der meisten vorkommsisse
 				HashMap<String, Integer> classifyer = new HashMap<String, Integer>();
 				for (int c = 0; c < k; c++) {
 					if (!classifyer.containsKey(trainingsData.get(c).getKeyValue())) {
@@ -210,7 +241,7 @@ public class kNNClassification implements Runnable {
 					classifyer.put(trainingsData.get(c).getKeyValue(), classifyer.get(trainingsData.get(c).getKeyValue()) + 1);
 				}
 
-				//Find best fit
+				// Find best fit
 				int biggestValue = 0;
 				String bestClassifyer = "";
 				for (String key : classifyer.keySet()) {
@@ -220,15 +251,15 @@ public class kNNClassification implements Runnable {
 					}
 				}
 
-				//System.out.println("Entry: " + entry + "\n was classified as " + bestClassifyer);
+				// System.out.println("Entry: " + entry + "\n was classified as
+				// " + bestClassifyer);
 			}
 		}
 
 		long millis = new Date().getTime() - start.getTime();
 		String runTime = String.format("%d min, %d sec, %d milli sec", TimeUnit.MILLISECONDS.toMinutes(millis), TimeUnit.MILLISECONDS.toSeconds(millis) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millis)), millis % 1000);
-		System.out.println("Time for learning: " + runTime);
+		System.out.println("Time for classifying " + data.size() + " lines of data: " + runTime);
 
-		System.out.println(confusionMatrix);
 	}
 
 }

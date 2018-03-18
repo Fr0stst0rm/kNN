@@ -113,7 +113,7 @@ public class DataController {
 					LearningDataEntry<String> dataEntry = new LearningDataEntry<String>();
 					for (int i = 0; i < line.split(valueDelimiter).length; i++) {
 						if (i == indexOfKey) {
-							dataEntry.setKeyValue(line.split(valueDelimiter)[i]);
+							dataEntry.setKeyValue(line.split(valueDelimiter)[i].trim());
 						} else {
 							dataEntry.addValue(Double.parseDouble(line.split(valueDelimiter)[i]));
 						}
