@@ -149,6 +149,7 @@ public class kNNClassification implements Runnable {
 				// System.out.println("Entry: " + entry + "\n was classified as
 				// " + bestClassifyer);
 			}
+
 			accuracy = accuracy / forTest.size();
 			System.out.println("Accuracy: " + accuracy);
 			accuracyList.add(accuracy);
@@ -218,42 +219,39 @@ public class kNNClassification implements Runnable {
 	@Override
 	public void run() {
 
-		for (int i = 0; i < dataBags; i++) {
-			HashMap<String, Double> confusionM = new HashMap<>();
+		// Alle bags werden zum classifizieren verwendet verwendet
+		ArrayList<LearningDataEntry<String>> trainingsData = new ArrayList<>();
+		for (DataBag dataBag : dataBagList) {
+			trainingsData.addAll(dataBag);
+		}
 
-			// Alle bags werden zum classifizieren verwendet verwendet
-			ArrayList<LearningDataEntry<String>> trainingsData = new ArrayList<>();
-			for (DataBag dataBag : dataBagList) {
-				trainingsData.addAll(dataBag);
+		// find kNN
+		for (DataEntry entry : data) {
+			EuklidianDistanceComparator comperator = new EuklidianDistanceComparator(entry);
+			Collections.sort(trainingsData, comperator);
+
+			// Zahlen der meisten vorkommsisse
+			HashMap<String, Integer> classifyer = new HashMap<String, Integer>();
+			for (int c = 0; c < k; c++) {
+				if (!classifyer.containsKey(trainingsData.get(c).getKeyValue())) {
+					classifyer.put(trainingsData.get(c).getKeyValue(), 0);
+				}
+				classifyer.put(trainingsData.get(c).getKeyValue(), classifyer.get(trainingsData.get(c).getKeyValue()) + 1);
 			}
 
-			// find kNN
-			for (DataEntry entry : data) {
-				EuklidianDistanceComparator comperator = new EuklidianDistanceComparator(entry);
-				Collections.sort(trainingsData, comperator);
-
-				// Zahlen der meisten vorkommsisse
-				HashMap<String, Integer> classifyer = new HashMap<String, Integer>();
-				for (int c = 0; c < k; c++) {
-					if (!classifyer.containsKey(trainingsData.get(c).getKeyValue())) {
-						classifyer.put(trainingsData.get(c).getKeyValue(), 0);
-					}
-					classifyer.put(trainingsData.get(c).getKeyValue(), classifyer.get(trainingsData.get(c).getKeyValue()) + 1);
+			// Find best fit
+			int biggestValue = 0;
+			String bestClassifyer = "";
+			for (String key : classifyer.keySet()) {
+				if (biggestValue < classifyer.get(key)) {
+					biggestValue = classifyer.get(key);
+					bestClassifyer = key;
 				}
-
-				// Find best fit
-				int biggestValue = 0;
-				String bestClassifyer = "";
-				for (String key : classifyer.keySet()) {
-					if (biggestValue < classifyer.get(key)) {
-						biggestValue = classifyer.get(key);
-						bestClassifyer = key;
-					}
-				}
-
-				// System.out.println("Entry: " + entry + "\n was classified as
-				// " + bestClassifyer);
 			}
+			
+			// System.out.println("Entry: " + entry + "\n was classified as
+			// " + bestClassifyer);
+
 		}
 
 		long millis = new Date().getTime() - start.getTime();

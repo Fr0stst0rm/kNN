@@ -13,6 +13,7 @@ public class Main {
 		kNNClassification algorithm = new kNNClassification(1);
 
 		ArrayList<LearningDataEntry<String>> learningData = DataController.parseLearningData("winequality-white.csv", "\n", ";");
+		//ArrayList<LearningDataEntry<String>> learningData = DataController.parseLearningData("iris.csv", "\n", ",");
 
 		algorithm.learn(learningData);
 
@@ -28,6 +29,10 @@ public class Main {
 		for (int i = 0; i < 100000; i++) {
 			testData100000.add(learningData.get(i % learningData.size()));
 		}
+//		ArrayList<DataEntry> testData1000000 = new ArrayList<>();
+//		for (int i = 0; i < 1000000; i++) {
+//			testData1000000.add(learningData.get(i % learningData.size()));
+//		}
 		
 		algorithm.classify(testData100000);
 
